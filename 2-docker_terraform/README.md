@@ -1,7 +1,6 @@
-# This module aims at experimenting locally 
-# by creating containers to ingest a Citibike dataset for a given year
+### This module aims at experimenting locally by creating containers to ingest a Citibike dataset for a given year
 
-# Run the containers using the following docker command:
+Run the containers using the following docker command:
 ```sh
 docker run -d \
 	--name citibike-postgres \
