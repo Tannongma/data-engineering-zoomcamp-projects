@@ -1,0 +1,142 @@
+#version: '3.9'
+
+services:
+
+  postgres-db:
+    image: postgres:17-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      #- pgdata:/var/lib/postgresql/data
+      - ./data/vol-postgres:/var/lib/postgresql/data:rw
+    ports:
+      - "${DB_PORT}:5432"
+  
+  minio:
+    image: minio/minio
+    container_name: minio
+    ports:
+      - "${MINIO_PORT_API}:9000"
+      - "${MINIO_PORT_CONSOLE}:9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    volumes:
+      #- vol-minio:/data
+      - ./data/vol-minio:/data:rw
+    command: server /data --console-address ":9001"
+
+
+  pgadmin-ui:
+    image: dpage/pgadmin4:latest
+    restart: always
+    ports:
+      - "${PGADMIN_PORT}:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+    volumes:
+      #- pgadmin_data:/var/lib/pgadmin
+      - ./data/vol-pgadmin_data:/var/lib/pgadmin:rw
+    depends_on:
+      - postgres-db
+
+  airflow:
+    build: ./airflow
+    restart: always
+    depends_on:
+      - postgres-db
+    environment:
+      AIRFLOW__CORE__EXECUTOR: ${AIRFLOW__CORE__EXECUTOR}
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres-db:5432/${POSTGRES_DB}
+    ports:
+      - "${AIRFLOW_PORT}:8080"
+
+  etl:
+    build: ./etl
+    restart: on-failure
+    depends_on:
+      - postgres-db
+    environment:
+      DB_HOST: postgres-db
+      DB_PORT: 5432
+      DB_USER: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      DB_NAME: ${POSTGRES_DB}
+
+  ml_service:
+    build: ./ml_service
+    restart: always
+    depends_on:
+      - postgres-db
+    ports:
+      - "${ML_SERVICE_PORT}:8000"
+
+  spark-master:
+    build: ./spark
+    #image: bitnami/spark:latest
+    container_name: spark-master
+    environment:
+      - SPARK_MODE=${SPARK_MODE_MASTER}
+    ports:
+      - "${SPARK_MASTER_PORT1}:8080"
+      - "${SPARK_MASTER_PORT2}:7077"
+    volumes:
+      - ./spark/conf/spark-defaults.conf:/opt/bitnami/spark/conf/spark-defaults.conf:rw
+    depends_on:
+      - minio
+
+  spark-worker:
+    build: ./spark
+    #image: bitnami/spark:latest
+    container_name: spark-worker
+    environment:
+      - SPARK_MODE=${SPARK_MODE_WORKER}
+      - SPARK_MASTER_URL=${SPARK_MASTER_URL}
+    depends_on:
+      - spark-master
+  
+  spark-submit:
+    build: ./spark-submit
+    depends_on:
+      - spark-master
+    environment:
+      - SPARK_MASTER_URL=${SPARK_MASTER_URL}
+    command: >
+      /opt/spark/bin/spark-submit
+      --master ${SPARK_MASTER_URL}
+      --deploy-mode client
+      --class my.main.Class
+      local:///opt/spark/jobs/my_spark_job.py
+
+  dbt:
+    build:
+      context: ./dbt
+      dockerfile: Dockerfile
+    container_name: dbt
+    volumes:
+      #- dbt:/usr/app
+      - ./data/dbt:/usr/app:rw
+    working_dir: /usr/app
+    depends_on:
+      - postgres-db
+    command: ["dbt", "run"]
+
+
+  jupyterlab:
+    image: quay.io/jupyter/base-notebook:latest
+    container_name: jupyterlab
+    ports:
+      - ${JUPYTERLAB_PORT}:8888
+    volumes:
+      #- shared-workspace:/opt/workspace
+      - ./data/shared-workspace:/opt/workspace:rw
+      
+# Uncomment the following lines to enable named volumes when not using bind mounts
+#volumes:
+#  pgdata:
+#  pgadmin_data:
+#  shared-workspace:

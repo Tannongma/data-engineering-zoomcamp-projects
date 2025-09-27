@@ -1,0 +1,4 @@
+dbt-core
+dbt-postgres
+# dbt-bigquery
+# Add other dbt adapters as needed     

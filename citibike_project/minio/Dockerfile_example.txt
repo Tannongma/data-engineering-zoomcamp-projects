@@ -1,0 +1,10 @@
+FROM minio/minio:latest
+
+# Install AWS CLI for internal diagnostics
+RUN apk add --no-cache python3 py3-pip && pip3 install awscli
+
+# Add a custom health check script
+COPY healthcheck.sh /usr/local/bin/healthcheck.sh
+RUN chmod +x /usr/local/bin/healthcheck.sh
+
+ENTRYPOINT ["minio", "server", "/data"]

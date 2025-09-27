@@ -1,0 +1,7 @@
+    pandas 
+    pyarrow 
+    fastparquet 
+    sqlalchemy 
+    requests 
+    boto3 
+    psycopg2-binary

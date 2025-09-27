@@ -1,0 +1,20 @@
+
+# Ignore local config
+config/
+.env
+.git
+
+# Ignore logs
+logs/
+debug.log
+
+# Ignore data files
+data/
+vol-pgadmin/
+vol-postgres/
+test/
+__pycache__/
+
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+*.pyc
