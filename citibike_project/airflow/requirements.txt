@@ -1,0 +1,33 @@
+psycopg2-binary
+apache-airflow-providers-postgres
+apache-airflow-providers-apache-spark
+pandas
+sqlalchemy
+requests
+pyarrow
+fastparquet
+boto3 # AWS SDK for Python
+google-cloud-storage  # Google Cloud Storage client library
+apache-airflow-providers-google  # Airflow Google provider
+#snowflake-connector-python>=3.1.4  # Snowflake connector for Python
+#snowflake-sqlalchemy>=1.4.8  # Snowflake SQLAlchemy dialect
+#apache-airflow-providers-snowflake>=3.1.4  # Airflow Snowflake provider
+apache-airflow-providers-amazon # Airflow Amazon provider
+#apache-airflow-providers-microsoft-azure>=6.4.0  # Airflow Azure provider
+#azure-storage-blob>=12.20.1  # Azure Blob Storage client library
+#azure-identity>=1.16.0  # Azure Identity library for authentication
+#apache-airflow-providers-microsoft-mssql>=3.4.0  # Airflow Microsoft SQL Server provider
+#pyodbc>=4.0.39  # ODBC database connector for Python
+#pymssql>=2.2.2  # Microsoft SQL Server database connector for Python
+#apache-airflow-providers-odbc>=3.4.0  # Airflow ODBC provider
+#apache-airflow-providers-apache-hive>=5.0.0  # Airflow Apache Hive provider
+#thrift>=0.16.0  # Thrift library for Apache Hive
+#thrift-sasl>=0.4.3  # Thrift SASL library for Apache Hive
+#sasl>=0.3.1  # SASL library for Apache Hive
+#apache-airflow-providers-apache-cassandra>=3.1.0  # Airflow Apache Cassandra provider
+#cassandra-driver>=3.25.0  # Cassandra database driver for Python
+#apache-airflow-providers-apache-druid>=3.1.0  # Airflow Apache Druid provider
+#pydruid>=0.6.0  # Druid client for Python
+#apache-airflow-providers-apache-kylin>=3.0.0  # Airflow Apache Kylin provider
+#kylinpy>=0.7.0  # Kylin client for Python
+#apache-airflow-providers-apache-pinot>=3.0.0  # Airflow Apache Pinot provider

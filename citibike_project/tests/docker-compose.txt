@@ -1,0 +1,31 @@
+services:
+
+  postgres-db:
+    image: postgres:17-alpine
+    restart: always
+    shm_size: 128mb
+    volumes:
+      - vol-pgdata:/var/lib/postgresql/data
+    ports:
+      - "${DB_PORT}:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+
+  pgadmin-ui:
+    image: dpage/pgadmin4:latest
+    restart: always
+    ports:
+      - "${PGADMIN_PORT}:8080"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+    volumes:
+      - vol-pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - postgres-db
+
+volumes:
+  vol-pgdata:
+  vol-pgadmin_data:
