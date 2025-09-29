@@ -9,8 +9,9 @@ COPY app/ ./app
 COPY requirements.txt .
 
 # Install Python dependencies
+# TODO: Add --no-cache-dir if image size becomes an issue or in prod to keep containers lean
 RUN pip install --upgrade pip --default-timeout=120
-RUN pip install --no-cache-dir --default-timeout=120 -r requirements.txt
+RUN pip install --default-timeout=120 -r requirements.txt
 
 # Set environment for Spark submit
 ENV SPARK_HOME=/opt/spark

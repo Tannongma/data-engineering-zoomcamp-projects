@@ -31,8 +31,11 @@ from google.cloud import storage, bigquery
 
 
 ## Declare global variables
+local_data_dir = Path(__file__).parent.parent / "data" / "citibike_data"
 BASE_URL = "https://s3.amazonaws.com/tripdata/"
-DOWNLOAD_DIR = "./data/citibike_data"
+
+DOWNLOAD_DIR = local_data_dir
+
 
 def main(params):
     user = params.user
@@ -239,8 +242,8 @@ def main(params):
                 # Download data from BigQuery and load to Postgres
                 for year in [2013]:#range(2013, 2015):  # TODO: Extend range until year 2019 in production or cloud environment
                     #print(year)
-                    # Query BigQuery in 1 million row chunks
-                    chunk_size = chunk_size  # 1 million rows per chunk
+                    # Query BigQuery in million row chunks
+                    chunk_size = chunk_size  # 1/2 million rows per chunk
                     offset = 0
 
                     # Check if table exists
@@ -313,7 +316,7 @@ def main(params):
     for url in files_list[-1:]: # TODO: Clear the list [-1:] to ingest all files in production or in cloud
         download_files(url) # Function does not return anything
 
-    # Load data into postgres container
+    ## Load data into postgres container
     
     #load_data_to_postgres()
     ingest_from_bigquery_to_postgres()

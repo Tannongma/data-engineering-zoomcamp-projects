@@ -22,8 +22,9 @@ RUN apt-get update && apt-get install -y \
 COPY requirements.txt /tmp/requirements.txt
 
 # Install Python dependencies in one step
+# TODO: Add --no-cache-dir if image size becomes an issue or in prod to keep containers lean
 RUN pip install --upgrade pip --default-timeout=120 \
-    && pip install --no-cache-dir --default-timeout=120 -r /tmp/requirements.txt
+    && pip install --default-timeout=120 -r /tmp/requirements.txt 
 
 # Create a directory for Spark jars if it doesn't exist
 RUN mkdir -p /opt/bitnami/spark/jars

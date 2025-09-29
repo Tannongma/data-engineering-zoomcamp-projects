@@ -1,0 +1,20 @@
+# Required libraries for the ETL service
+pandas
+sqlalchemy
+psycopg2-binary
+requests
+
+bs4 
+lxml 
+
+# For handling Parquet files
+pyarrow
+fastparquet
+
+# Cloud SDKs
+boto3 # AWS SDK for Python
+google-cloud
+google-cloud-bigquery
+
+# Spark related packages
+pyspark

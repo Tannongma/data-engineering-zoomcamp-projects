@@ -11,7 +11,7 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
     volumes:
       #- pgdata:/var/lib/postgresql/data
-      - ./data/vol-postgres:/var/lib/postgresql/data:rw
+      - ./data/vol-postgres:/var/lib/postgresql/db-data:rw
     ports:
       - "${DB_PORT}:5432"
   
@@ -127,7 +127,10 @@ services:
 
 
   jupyterlab:
-    image: quay.io/jupyter/base-notebook:latest
+    #image: quay.io/jupyter/base-notebook:latest
+    build:
+      context: ./jupyterlab
+      dockerfile: Dockerfile
     container_name: jupyterlab
     ports:
       - ${JUPYTERLAB_PORT}:8888

@@ -29,8 +29,10 @@ from google.cloud import storage, bigquery
 
 
 ## Declare global variables
+local_data_dir = Path(__file__).parent.parent / "data" / "citibike_data"
 BASE_URL = "https://s3.amazonaws.com/tripdata/"
-DOWNLOAD_DIR = "./data/citibike_data"
+
+DOWNLOAD_DIR = local_data_dir
 
 def main(params):
     user = params.user

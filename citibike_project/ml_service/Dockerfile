@@ -3,9 +3,10 @@ FROM python:3.10-slim
 WORKDIR /app
 
 # Install dependencies
+# TODO: Add --no-cache-dir if image size becomes an issue or in prod to keep containers lean
 COPY requirements.txt .
 RUN pip install --upgrade pip --default-timeout=120
-RUN pip install --no-cache-dir --default-timeout=120 -r requirements.txt
+RUN pip install --default-timeout=120 -r requirements.txt
 
 # Copy ML app and models
 COPY app.py .

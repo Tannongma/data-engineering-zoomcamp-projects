@@ -19,8 +19,8 @@ apache-airflow-providers-amazon # Airflow Amazon provider
 #apache-airflow-providers-microsoft-mssql>=3.4.0  # Airflow Microsoft SQL Server provider
 #pyodbc>=4.0.39  # ODBC database connector for Python
 #pymssql>=2.2.2  # Microsoft SQL Server database connector for Python
-#apache-airflow-providers-odbc>=3.4.0  # Airflow ODBC provider
-#apache-airflow-providers-apache-hive>=5.0.0  # Airflow Apache Hive provider
+apache-airflow-providers-odbc  # Airflow ODBC provider
+apache-airflow-providers-apache-hive  # Airflow Apache Hive provider
 #thrift>=0.16.0  # Thrift library for Apache Hive
 #thrift-sasl>=0.4.3  # Thrift SASL library for Apache Hive
 #sasl>=0.3.1  # SASL library for Apache Hive
