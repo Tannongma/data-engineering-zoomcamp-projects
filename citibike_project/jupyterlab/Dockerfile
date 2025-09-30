@@ -1,20 +1,21 @@
-# Use Bitnami Spark base image
+# Use Jupyter base image
 FROM quay.io/jupyter/base-notebook:latest
 
-
-# Set working directory
-WORKDIR /app
-
-
-# Copy requirements.txt early to leverage caching
+# Copy requirements
 COPY requirements.txt /tmp/requirements.txt
 
-# Install Python dependencies in one step
-# TODO: Add --no-cache-dir if image size becomes an issue or in prod to keep containers lean
+# Install dependencies
 RUN pip install --upgrade pip --default-timeout=120 \
-    && pip install --default-timeout=120 -r /tmp/requirements.txt 
+    && pip install --default-timeout=120 -r /tmp/requirements.txt
 
+# Environment variables for Spark
+ENV SPARK_MASTER=spark://spark-master:7077 \
+    PYSPARK_PYTHON=python \
+    PYSPARK_DRIVER_PYTHON=jupyter \
+    PYSPARK_DRIVER_PYTHON_OPTS="notebook"
+ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+ENV PATH=$PATH:$JAVA_HOME/bin
 
-
-# Set default command to start jupyterlab
-ENTRYPOINT ["bash", "jupyter"]
+# Copy code at the end (changes won’t break cache above)
+COPY . /app
+WORKDIR /app
