@@ -1,12 +1,17 @@
 # Use Jupyter base image
 FROM quay.io/jupyter/base-notebook:latest
 
-# Copy requirements
-COPY requirements.txt /tmp/requirements.txt
 
 # Install dependencies
-RUN pip install --upgrade pip --default-timeout=120 \
-    && pip install --default-timeout=120 -r /tmp/requirements.txt
+RUN pip install --upgrade pip --default-timeout=120 
+# Step 1: install stable core deps
+COPY base-requirements.txt /tmp/base-requirements.txt
+RUN pip install --default-timeout=300 -i https://pypi.org/simple -r /tmp/base-requirements.txt
+
+# Step 2: install project-specific deps (rebuilds more often)
+COPY requirements.txt /tmp/requirements.txt
+RUN pip install --default-timeout=300 -i https://pypi.org/simple -r /tmp/requirements.txt
+
 
 # Environment variables for Spark
 ENV SPARK_MASTER=spark://spark-master:7077 \

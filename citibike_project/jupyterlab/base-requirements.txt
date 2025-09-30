@@ -1,0 +1,10 @@
+
+## Required libraries for spark integration and Jupyter
+# Core Spark
+pyspark       # must match your cluster Spark version
+
+# Jupyter extensions
+jupyterlab
+ipykernel
+jupyter-server-proxy  # lets you proxy Spark UI inside Jupyter
+

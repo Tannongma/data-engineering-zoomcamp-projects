@@ -1,4 +1,4 @@
-
+## Other useful libraries
 # Required libraries for the ETL service
 sqlalchemy
 psycopg2-binary
@@ -6,21 +6,6 @@ requests
 bs4 
 lxml # for HTML parsing
 
-
-
-# Core Spark
-pyspark       # must match your cluster Spark version
-
-# Jupyter extensions
-jupyterlab
-ipykernel
-jupyter-server-proxy  # lets you proxy Spark UI inside Jupyter
-
-# Data science essentials
-pandas
-numpy
-pyarrow
-fastparquet
 
 # Visualization
 matplotlib

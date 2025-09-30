@@ -134,6 +134,7 @@ services:
       - ${JUPYTERLAB_PORT}:8888
     volumes:
       - ./notebooks:/home/jovyan/work
+      - ~/.cache/pip:/root/.cache/pip
     environment:
       - JUPYTER_ENABLE_LAB=yes
       - GRANT_SUDO=yes
